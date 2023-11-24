@@ -33,7 +33,7 @@ def create_user(db: Session, user: UserCreate):
 def update_user(db: Session, user_id: int, update_data: UserUpdate):
     db_user = get_user(db, user_id)
     if db_user:
-        update_data_dict = update_data.dict(exclude_unset=True)
+        update_data_dict = update_data.model_dump(exclude_unset=True)
         for key, value in update_data_dict.items():
             setattr(db_user, key, value)
         db.commit()

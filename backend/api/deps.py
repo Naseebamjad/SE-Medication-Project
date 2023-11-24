@@ -40,7 +40,7 @@ def get_current_user(
     db: Session = Depends(get_db), 
     data : str = Depends(get_current_user_id)
 ) -> models.User:
-    user = crud.get_user(db, id=data)
+    user = crud.get_user(db, user_id=data)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
