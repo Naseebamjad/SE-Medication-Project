@@ -43,6 +43,16 @@ def delete_doctor(doctor_id: int, db: Session = Depends(get_db), current_user: s
     crud.delete_doctor(db, doctor_id, settings.IMAGES_PATH)
     return {"detail": "Doctor deleted"}
 
+@router.get("/doctors/{doctor_id}/articles")
+def get_doctor_image(doctor_id: int, db: Session = Depends(get_db), current_user: schemas.UserRead = Depends(get_current_admin)):
+    doctor = crud.get_doctor(db, doctor_id)
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    articles = crud.get_articles_by_author(author_id= doctor_id, db= db)
+    if articles:
+        return articles
+    raise HTTPException(status_code=404, detail="articles not found")
+
 @router.get("/doctors/{doctor_id}/image")
 def get_doctor_image(doctor_id: int, db: Session = Depends(get_db), current_user: schemas.UserRead = Depends(get_current_admin)):
     doctor = crud.get_doctor(db, doctor_id)

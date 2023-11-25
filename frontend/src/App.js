@@ -4,6 +4,8 @@ import Register from "./components/register";
 import Login from "./components/login";
 import Footer from "./components/footer";
 import OurDoctors from "./components/ourDoctors";
+import Articles from "./components/articles";
+import ArticleDetail from "./components/article"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/our-doctors" element={<OurDoctors />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/articles/:id" element={<ArticleDetail />} />
       </Routes>
       <Footer />
     </Router>
