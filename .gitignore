@@ -1,2 +1,11 @@
-backend
+backend/__pycache__
+backend/models/__pycache__
+backend/api/__pycache__
+backend/api/endpoints/admin/__pycache__
+backend/api/endpoints/user/__pycache__
+backend/core/__pycache__
+backend/crud/__pycache__
+backend/db/__pycache__
+backend/schemas/__pycache__
+backend/venv
 frontend/node_modules
