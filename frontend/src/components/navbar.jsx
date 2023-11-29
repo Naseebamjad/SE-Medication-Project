@@ -1,7 +1,41 @@
 import logo from "../Images/wecarelogo.png";
-import { Link } from "react-router-dom";
-import React from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useAuth } from "../AuthContext";
+import { Configuration } from "../config"
+
+
 const NavBar = () => {
+  const config = new Configuration()
+  const navigate = useNavigate();
+  const { login, setLogin } = useAuth();
+  useEffect( () => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken === null || userToken === "") {
+      setLogin(false);
+    } else {
+      axios.get(`${config.baseUrl}/users/me`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("userToken"),
+        }
+      })
+      .then(response => {
+        console.log(response.data)
+        setLogin(true);
+      })
+      .catch (error => {
+        if (error.message === "Request failed with status code 403") {
+          setLogin(false);
+        }
+      });
+    }
+  }, []);
+
+  const logout = () => {
+    console.log("Called")
+    localStorage.removeItem("userToken");
+  };
   return (
     <div className="flex justify-center bg-white">
       <div className="navbar bg-white lg:w-11/12">
@@ -39,9 +73,11 @@ const NavBar = () => {
               >
                 Our Doctors
               </Link>
-              <li className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal  text-custom hover:bg-white cursor-pointer  text-left p-1">
+              <Link 
+                to="/book-appointment"
+                className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal  text-custom hover:bg-white cursor-pointer  text-left p-1">
                 Book Appointment
-              </li>
+              </Link>
               <Link
                 to="/articles"
                 className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal  text-custom hover:bg-white cursor-pointer  text-left p-1"
@@ -84,9 +120,11 @@ const NavBar = () => {
             >
               Our Doctors
             </Link>
-            <li className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal text-center text-custom hover:bg-white cursor-pointer flex justify-center m-auto mx-3">
+            <Link 
+              to = "/book-appointment" 
+              className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal text-center text-custom hover:bg-white cursor-pointer flex justify-center m-auto mx-3">
               Book Appointment
-            </li>
+            </Link>
             <Link
               to="/articles"
               className="hover:text-blue-500 font-poppins text-18 font-semibold leading-27 tracking-normal text-center text-custom hover:bg-white cursor-pointer flex justify-center m-auto mx-3"
@@ -101,22 +139,56 @@ const NavBar = () => {
             </Link>
           </ul>
         </div>
-        <div className="navbar-end">
-          <Link
-            to="/register"
-            className="btn btn-outline hover:text-white text-blue-500 bg-opacity-100 lg:h-9 lg:w-36 w-24 rounded-full mx-1  hover:bg-gradient-to-r from-teal-300 via-teal-500 to-teal-700 "
-          >
-            Register
-          </Link>
-          <Link
-            to="/login"
-            className="btn btn-outline hover:text-white text-blue-500 bg-opacity-100 lg:h-9 lg:w-36 w-24 rounded-full hover:bg-gradient-to-r from-teal-300 via-teal-500 to-teal-700"
-          >
-            Login
-          </Link>
-          {/* <a className="btn mx-1">Register</a>
-          <a className="btn">Login</a> */}
-        </div>
+
+        {login ? (
+          <div className="navbar-end">
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
+              </div>
+              <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li>
+                  <Link to="/profile" className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </Link>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <a onClick={logout}>
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <div className="navbar-end">
+            <Link
+              to="/register"
+              className="btn btn-outline hover:text-white text-blue-500 bg-opacity-100 lg:h-9 lg:w-36 w-24 rounded-full mx-1  hover:bg-gradient-to-r from-teal-300 via-teal-500 to-teal-700 "
+            >
+              Register
+            </Link>
+            <Link
+              to="/login"
+              className="btn btn-outline hover:text-white text-blue-500 bg-opacity-100 lg:h-9 lg:w-36 w-24 rounded-full hover:bg-gradient-to-r from-teal-300 via-teal-500 to-teal-700"
+            >
+              Login
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

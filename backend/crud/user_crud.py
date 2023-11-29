@@ -33,6 +33,8 @@ def create_user(db: Session, user: UserCreate):
 def update_user(db: Session, user_id: int, update_data: UserUpdate):
     db_user = get_user(db, user_id)
     if db_user:
+        if update_data.password:
+            update_data.password = get_password_hash(update_data.password)
         update_data_dict = update_data.model_dump(exclude_unset=True)
         for key, value in update_data_dict.items():
             setattr(db_user, key, value)

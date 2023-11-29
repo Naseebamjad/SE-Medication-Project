@@ -32,3 +32,8 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     address: Optional[str] = None
     last_login: Optional[datetime] = None
+
+class PasswordUpdate(BaseModel):
+    currentpassword: str
+    newpassword: str
+    confirmPassword: str
