@@ -3,8 +3,10 @@ import doclinkedin from "../../Images/doclinkedin.png";
 import docfacebook from "../../Images/docfacebook.png";
 import docinstagram from "../../Images/docinstagram.png";
 import defaultImg from "../../Images/default.jpg"
+import { Configuration } from "../../config"
 const DoctorCard = ({ id, name, category }) => {
-  const path = 'http://127.0.0.1:8000/doctors/'+id+'/image'
+  const config = new Configuration()
+  const path = `${config.baseUrl}/doctors/${id}/image`
   return (
     <div className="w-80 rounded-sm mx-1 my-1">
       <img src={path} onError={(e) => e.target.src = defaultImg} alt="" srcSet="" className="w-full"/>

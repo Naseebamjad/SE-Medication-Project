@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
+import { Configuration } from "../config"
 
 const ArticleDetail = () => {
+  const config = new Configuration()
   const { id } = useParams(); 
   const [author_id, setAuthor_id] = useState();
   const [article, setArticle] = useState([]);
@@ -10,7 +12,7 @@ const ArticleDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const url = 'http://127.0.0.1:8000/articles/'+id
+  const url = `${config.baseUrl}/articles/${id}`
   const author_url = `/doctors/${author_id}`
   const formatDate = (dateString) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { Configuration } from "../config"
 
 const Register = () => {
+  const config = new Configuration()
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ const Register = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: "http://127.0.0.1:8000/signup",
+        url: `${config.baseUrl}/signup`,
         headers: {
           'accept': 'application/json',
           'Content-Type': 'application/json',

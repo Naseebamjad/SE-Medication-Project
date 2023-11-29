@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import DoctorCard from "./common/doctorCard";
+import { Configuration } from "../config"
 
 
 const OurDoctors = () => {
+  const config = new Configuration()
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,7 +16,7 @@ const OurDoctors = () => {
       try {
         const response = await axios({
           method: 'get',
-          url: 'http://127.0.0.1:8000/doctors',
+          url: `${config.baseUrl}/doctors`,
           headers: {
             'Authorization': 'Bearer '+localStorage.getItem("userToken"),
           }

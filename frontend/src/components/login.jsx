@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Configuration } from "../config"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const config = new Configuration()
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -16,7 +17,7 @@ const Login = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: "http://127.0.0.1:8000/login",
+        url: `${config.baseUrl}/login`,
         headers: {
           'accept': 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded',
